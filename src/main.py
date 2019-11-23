@@ -38,6 +38,7 @@ def train(model, loader):
             print('Batch:', iterInfo[0], '/', iterInfo[1], 'Loss:', loss)
 
         # Validate
+        print(len(loader))
         charErrorRate, addressAccuracy, wordErrorRate = validate(model, loader)
         cer_summary = tf.Summary(value=[tf.Summary.Value(
             tag='charErrorRate', simple_value=charErrorRate)])  # Tensorboard: Track charErrorRate
