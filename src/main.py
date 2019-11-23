@@ -104,15 +104,19 @@ def validate(model, loader):
             numCharTotal += len(batch.gtTexts[i])
             print('[OK]' if dist == 0 else '[ERR:%d]' % dist, '"' +
                   batch.gtTexts[i] + '"', '->', '"' + recognized[i] + '"')
-
-    # Print validation result
-    charErrorRate = sum(totalCER)/len(totalCER)
-    addressAccuracy = numWordOK / numWordTotal
-    wordErrorRate = sum(totalWER)/len(totalWER)
-    print('Character error rate: %f%%. Address accuracy: %f%%. Word error rate: %f%%' %
-          (charErrorRate*100.0, addressAccuracy*100.0, wordErrorRate*100.0))
-    return charErrorRate, addressAccuracy, wordErrorRate
-
+    try:
+      charErrorRate = sum(totalCER)/len(totalCER)
+      wordErrorRate = sum(totalWER)/len(totalWER)
+      textLineAccuracy = numWordOK / numWordTotal
+    except ZeroDivisionError:
+      charErrorRate = 0
+      wordErrorRate = 0
+      textLineAccuracy = 0
+    
+    print('Character error rate: %f%%. Text line accuracy: %f%%. Word error rate: %f%%' %
+          (charErrorRate*100.0, textLineAccuracy*100.0, wordErrorRate*100.0))
+    return charErrorRate, textLineAccuracy, wordErrorRate
+   
 
 def load_different_image():
     imgs = []
